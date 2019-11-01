@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "stdio.h" //ADDED
 
 struct {
   struct spinlock lock;
@@ -325,7 +326,7 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
-  
+
   for(;;){
     // Enable interrupts on this processor.
     sti();
@@ -342,6 +343,9 @@ scheduler(void)
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      
+      //weemsp DEBUG ADDED
+      printf("process [%s:%d] is running\n", p->name, p->pid);
 
       swtch(&(c->scheduler), p->context);
       switchkvm();
