@@ -6,7 +6,6 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
-#include "stdio.h" //ADDED
 
 struct {
   struct spinlock lock;
@@ -345,7 +344,7 @@ scheduler(void)
       p->state = RUNNING;
       
       //weemsp DEBUG ADDED
-      printf("process [%s:%d] is running\n", p->name, p->pid);
+      cprintf("process [%s:%d] is running\n", p->name, p->pid);
 
       swtch(&(c->scheduler), p->context);
       switchkvm();
