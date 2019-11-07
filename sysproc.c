@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "proc.c"
 
 int
 sys_fork(void)
@@ -88,4 +89,17 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+//weemsp
+//prints all surrent processes
+int
+sys_crsp(void)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    cprintf("%s:%d\n", p->name, p->pid);
+  }
+  release(&ptable.lock);
 }

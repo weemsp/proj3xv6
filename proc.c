@@ -7,10 +7,10 @@
 #include "proc.h"
 #include "spinlock.h"
 
-struct {
+/*struct {
   struct spinlock lock;
   struct proc proc[NPROC];
-} ptable;
+} ptable;*/ //moved to proc.h
 
 static struct proc *initproc;
 
@@ -344,7 +344,7 @@ scheduler(void)
       p->state = RUNNING;
       
       //weemsp DEBUG ADDED
-      cprintf("process [%s:%d] is running\n", p->name, p->pid);
+      //cprintf("process [%s:%d] is running\n", p->name, p->pid); //uncomment for spam
 
       swtch(&(c->scheduler), p->context);
       switchkvm();
@@ -357,6 +357,7 @@ scheduler(void)
 
   }
 }
+
 
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
