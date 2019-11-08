@@ -104,8 +104,10 @@ sys_crsp(void)
   struct proc *p;
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-    if (p->pid)
-      cprintf("%s:%d\n", p->name, p->pid);
+    if (p->state == RUNNING)
+      cprintf("%s : %d RUNNING\n", p->name, p->pid);
+    else if (p->state == SLEEPING)
+      cprintf("%s : %d SLEEPING\n", p->name, p->pid);
   }
   release(&ptable.lock);
   //cprintf("that's all\n");
