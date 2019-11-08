@@ -6,7 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-#include "proc.c"
+#include "spinlock.h"
 
 int
 sys_fork(void)
@@ -91,6 +91,11 @@ sys_uptime(void)
   return xticks;
 }
 
+extern struct {
+  struct spinlock lock;
+  struct proc proc[NPROC];
+} ptable;
+
 //weemsp
 //prints all surrent processes
 int
@@ -102,4 +107,5 @@ sys_crsp(void)
     cprintf("%s:%d\n", p->name, p->pid);
   }
   release(&ptable.lock);
+  return 0;
 }

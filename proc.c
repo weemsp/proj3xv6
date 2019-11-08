@@ -7,10 +7,10 @@
 #include "proc.h"
 #include "spinlock.h"
 
-/*struct {
+struct {
   struct spinlock lock;
   struct proc proc[NPROC];
-} ptable;*/ //moved to proc.h
+} ptable;
 
 static struct proc *initproc;
 
