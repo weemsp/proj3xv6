@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "spinlock.h"
 
 int
 sys_fork(void)
@@ -88,4 +89,27 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+extern struct {
+  struct spinlock lock;
+  struct proc proc[NPROC];
+} ptable;
+
+//weemsp
+//prints all surrent processes
+int
+sys_crsp(void)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p->state == RUNNING)
+      cprintf("%s : %d RUNNING\n", p->name, p->pid);
+    else if (p->state == SLEEPING)
+      cprintf("%s : %d SLEEPING\n", p->name, p->pid);
+  }
+  release(&ptable.lock);
+  //cprintf("that's all\n");
+  return 0;
 }
