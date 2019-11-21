@@ -49,6 +49,10 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  //@weemsp Added for alternate schedule
+  int queuenum;                //current queue (3 to 0)
+  int runsleft;                //runs left in current queue
+  int beenidle;                //time since last run
 };
 
 // Process memory is laid out contiguously, low addresses first:
